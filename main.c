@@ -26,12 +26,11 @@ int main(int argc, const char * argv[])  {
     char y[100]="";
     char z[100]="";
     strcpy(x,argv[1]);
-    strcpy(y,argv[2]);
-    strcpy(z,argv[3]);
 
     pid_t child_1;
     int n, status,port[2];
 
+    //create pipe between parent and child processes
     if (pipe(port) < 0){
         perror("pipe error");
         exit(0);
@@ -41,6 +40,7 @@ int main(int argc, const char * argv[])  {
 
     //for parent process
     if(child_1 > 0) {
+        strcpy(x,argv[1]);
         printf("parent (PID %d) created child_1 (PID %d).\n",getpid(),child_1);
         printf("parent (PID %d) receives X = \"%s\" from the user \n",getpid(),x);
         printf("parent (PID %d) writes X = \"%s\" to the pipe\n",getpid(), x);
@@ -53,6 +53,8 @@ int main(int argc, const char * argv[])  {
 
     //for child process
     if(child_1 == 0) {
+        strcpy(y,argv[2]);
+        strcpy(z,argv[3]);
         printf("child (PID %d) receives Y = \"%s\" and Z = \"%s\" from the user\n",getpid(),y,z);
         //put y and z together
         strcat(y," ");
