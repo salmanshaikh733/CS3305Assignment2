@@ -47,9 +47,10 @@ int main(int argc, const char * argv[])  {
         write(port[1],argv[1],2);
         wait(NULL);
         char fullString[100];
-        read(port[0],fullString,20);
+        read(port[0],fullString,100);
         printf("parent (PID %d) reads concatenated result from the pipe (Z =\"%s\")\n",getpid(),fullString);
     }
+
     //for child process
     if(child_1 == 0) {
         printf("child (PID %d) receives Y = \"%s\" and Z = \"%s\" from the user\n",getpid(),y,z);
@@ -58,21 +59,15 @@ int main(int argc, const char * argv[])  {
         strcat(y,z);
         printf("child (PID %d) concatenates Y and Z to generate Y = \"%s\"\n",getpid(),y);
 
-        char pipeRead[2];
-        read(port[0],pipeRead,2);
-        //TODO most likely remove this wait not needed
-        wait(NULL);
+        char pipeRead[100];
+        read(port[0],pipeRead,100);
         printf("child (PID %d) reads X from pipe = \"%s\"\n",getpid(),pipeRead);
         strcat(pipeRead," ");
         strcat(pipeRead,y);
         printf("child (PID %d) concatenates X and Y to generate Z = \"%s\"\n",getpid(),pipeRead);
-        write(port[1],pipeRead,20);
+        write(port[1],pipeRead,100);
         printf("child (PID %d) writes Z into the pipe\n",getpid());
     }
-
-    wait(NULL);
-
-
 
     return 0;
 }
