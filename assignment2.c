@@ -48,7 +48,7 @@ int main(int argc, const char * argv[])  {
         wait(NULL);
         char fullString[100];
         read(port[0],fullString,100);
-        printf("parent (PID %d) reads concatenated result from the pipe (Z =\"%s\")\n",getpid(),fullString);
+        printf("parent (PID %d) reads concatenated result from the pipe (Z' =\"%s\")\n",getpid(),fullString);
     }
 
     //for child process
@@ -59,16 +59,16 @@ int main(int argc, const char * argv[])  {
         //put y and z together
         strcat(y," ");
         strcat(y,z);
-        printf("child (PID %d) concatenates Y and Z to generate Y = \"%s\"\n",getpid(),y);
+        printf("child (PID %d) concatenates Y and Z to generate Y' = \"%s\"\n",getpid(),y);
 
         char pipeRead[100];
         read(port[0],pipeRead,100);
         printf("child (PID %d) reads X from pipe = \"%s\"\n",getpid(),pipeRead);
         strcat(pipeRead," ");
         strcat(pipeRead,y);
-        printf("child (PID %d) concatenates X and Y to generate Z = \"%s\"\n",getpid(),pipeRead);
+        printf("child (PID %d) concatenates X and Y' to generate Z' = \"%s\"\n",getpid(),pipeRead);
         write(port[1],pipeRead,100);
-        printf("child (PID %d) writes Z into the pipe\n",getpid());
+        printf("child (PID %d) writes Z' into the pipe\n",getpid());
     }
 
     return 0;
